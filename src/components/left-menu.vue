@@ -14,6 +14,7 @@
         </template>
         <left-menu
           v-if="item.children"
+          @getBreadcrumb="getBreadcrumb"
           :menu-data="item.children"></left-menu>
       </el-submenu>
       <el-menu-item

@@ -23,7 +23,7 @@
         class="aside"
         width="230px">
         <el-menu
-          background-color="#012356"
+          background-color="#263238"
           text-color="#fff"
           active-text-color="#21b7fd"
           :unique-opened="true"
@@ -36,7 +36,23 @@
         </el-menu>
       </el-aside>
       <el-main>
-        <router-view/>
+        <div class="contain_main_top">
+          <img
+            class="address_icon"
+            src="../assets/img/zb.png" />
+          <p class="p1">当前位置：</p>
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item
+              v-for="(item, index) in breadcrumbData"
+              :key="index"
+              :to="{ path: item.path }">
+              {{item.name}}
+            </el-breadcrumb-item>
+          </el-breadcrumb>
+        </div>
+        <div class="index_main">
+          <router-view/>
+        </div>
       </el-main>
     </el-container>
   </el-container>
@@ -53,17 +69,28 @@ export default {
   data() {
     return {
       menuData: [],
-      activeIndex: 'Home'
+      activeIndex: 'Home',
+      breadcrumbData: [
+        { path: '/home/index', name: '首页' }
+      ]
     }
   },
   mounted() {
     this.menuData = this.$store.getters.getAsyncRouteInfo[0].children
-    this.activeIndex = window.sessionStorage.getItem('activeIndex')
+    const activeIndex = window.sessionStorage.getItem('activeIndex')
+    if (activeIndex) {
+      this.activeIndex = activeIndex
+    }
+    const breadcrumbData = JSON.parse(window.sessionStorage.getItem('breadcrumbData'))
+    if (breadcrumbData && breadcrumbData.length > 0) {
+      this.breadcrumbData = breadcrumbData
+    }
   },
   methods: {
     // 获取面包屑导航
     getBreadcrumb(array) {
-      window.sessionStorage.setItem('UrlName', JSON.stringify(array))
+      console.log(222, array)
+      window.sessionStorage.setItem('breadcrumbData', JSON.stringify(array))
       this.breadcrumbData = array
     },
     // 退出登录
@@ -94,12 +121,21 @@ export default {
   /deep/.el-menu {
     border-right: none;
   }
+  .index_main {
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    border-radius: 4px;
+    display: block;
+    height: calc(100% - 80px);
+    width: calc(100% - 40px);
+    background: white;
+    padding: 20px;
+  }
 
   .el-main {
-    background-color: #E9EEF3;
+    /*background-color: #E9EEF3;*/
+    background: #f1f4f5;
     color: #333;
-    text-align: center;
-    line-height: 160px;
+    padding: 0 20px 20px;
   }
 
   .index_header {
@@ -149,7 +185,7 @@ export default {
     }
   }
   .aside {
-    background: #012356;
+    background: #263238;
     height: calc(100vh - 60px);
     /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
     &::-webkit-scrollbar {
@@ -168,6 +204,37 @@ export default {
       border-radius: 10px; /*滚动条的圆角*/
       -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
       background-color: #1142a7; /*滚动条的背景颜色*/
+    }
+  }
+  /deep/.contain_main_top {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    .address_icon {
+    }
+    .p1 {
+      font-size: 12px;
+      color: #21b7fd;
+      margin-left: 6px;
+    }
+    .el-breadcrumb__inner {
+      color: #21b7fd;
+      font-size: 12px;
+      font-weight: normal;
+      &:hover {
+        color: #21b7fd;
+      }
+    }
+    .el-breadcrumb__separator {
+      color: #21b7fd;
+    }
+    .el-breadcrumb__inner .is-link {
+      color: #21b7fd;
+      font-size: 12px;
+      font-weight: normal;
+      &:hover {
+        color: #21b7fd;
+      }
     }
   }
 </style>

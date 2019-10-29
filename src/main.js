@@ -7,6 +7,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Tools from './utils/tools'
 import Router from 'vue-router'
+import { HttpClient } from './utils/HttpUtils'
 
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location) {
@@ -16,6 +17,7 @@ Router.prototype.push = function push(location) {
 Vue.use(ElementUI)
 Vue.use(Tools)
 
+Vue.prototype.HttpClient = HttpClient
 Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
