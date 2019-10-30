@@ -28,7 +28,7 @@
 <script>
 export default {
   name: 'Index',
-  data() {
+  data () {
     return {
       userName: '',
       password: '',
@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     // 登录
-    async handleSubmit() {
+    async handleSubmit () {
       const param = {
         userName: this.userName,
         password: this.password,
@@ -45,6 +45,12 @@ export default {
         uid: 1
       }
       await this.$store.dispatch('saveUserInfoData', param)
+      /* this.HttpUtils.post('/admin/user/login', {
+        personLoginName: 'admin',
+        personPassword: 'ps201802'
+      }).then(res => {
+        console.log(111222, res)
+      }) */
       this.$router.push({
         path: '/home'
       })
